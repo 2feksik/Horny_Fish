@@ -1,0 +1,15 @@
+class Main {
+    function void main() {
+        var Game game;
+        
+        do Game.initializeStaticFields();
+        do Obstacle.initializeStaticFields();
+
+        let game = Game.new();
+        
+        do game.run();
+        do game.dispose();
+
+        return;
+    }
+}

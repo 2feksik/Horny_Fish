@@ -1,0 +1,49 @@
+function ObstacleNode.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push constant 0
+pop this 1
+push pointer 0
+return
+function ObstacleNode.update 0
+push argument 0
+pop pointer 0
+push this 0
+call Obstacle.update 1
+pop temp 0
+push this 1
+return
+function ObstacleNode.setNext 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return
+function ObstacleNode.getNext 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function ObstacleNode.getCurrent 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function ObstacleNode.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Obstacle.dispose 1
+pop temp 0
+push this 1
+call ObstacleNode.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

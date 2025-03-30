@@ -1,0 +1,73 @@
+class Player {
+    field int x, y;
+    field int width, height;
+    field int isJumping;
+    field int gravity;
+    field int jumpForce;
+    
+    constructor Player new() {
+        let x = 50;
+        let y = 200;
+        let width = 12;
+        let height = 16;
+        let isJumping = 0;
+        let gravity = 2;
+        let jumpForce = 10;
+        return this;
+    }
+    
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+    
+    method void jump() {
+        let isJumping = 1;
+        let y = y - jumpForce;
+
+        return;
+    }
+    
+    method void update() {
+        let y = y + gravity;
+        if (y > 230) {
+            let y = 230;
+            let isJumping = 0;
+            return;
+        }
+        if (y < 20) {
+            let y = 20;
+            let isJumping = 0;
+        }
+        return;
+    }
+    
+    method void draw() {
+        var int memAddress; 
+        let memAddress = 16384 + ((y * 32) + (x - ((x / 16) * 16)));
+
+        do Memory.poke(memAddress, -16);
+        do Memory.poke(memAddress + 32, -32752);
+        do Memory.poke(memAddress + 64, -32752);
+        do Memory.poke(memAddress + 96, -32751);
+        do Memory.poke(memAddress + 128, -26605);
+        do Memory.poke(memAddress + 160, -26603);
+        do Memory.poke(memAddress + 192, -32743);
+        do Memory.poke(memAddress + 224, -32743);
+        do Memory.poke(memAddress + 256, -32743);
+        do Memory.poke(memAddress + 288, -32743);
+        do Memory.poke(memAddress + 320, -32235);
+        do Memory.poke(memAddress + 352, -31725);
+        do Memory.poke(memAddress + 384, -2031);
+        do Memory.poke(memAddress + 416, -32752);
+        do Memory.poke(memAddress + 448, -32752);
+        do Memory.poke(memAddress + 480, -16);
+        
+        return;
+    }
+    
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getWidth() { return width; }
+    method int getHeight() { return height; }
+}

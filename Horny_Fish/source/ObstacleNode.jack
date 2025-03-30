@@ -1,0 +1,39 @@
+class ObstacleNode {
+    field Obstacle current;
+    field ObstacleNode next;
+
+    constructor ObstacleNode new(Obstacle obstacle) {
+        let current = obstacle;
+        let next = 0;
+
+        return this;
+    }
+
+    method ObstacleNode update() {
+        do current.update();
+
+        return next;
+    }
+
+    method void setNext(ObstacleNode node) {
+        let next = node;
+
+        return;
+    }
+
+    method ObstacleNode getNext() {
+        return next;
+    }
+
+    method Obstacle getCurrent() {
+        return current;
+    }
+
+    method void dispose() {
+        do current.dispose();
+        do next.dispose();
+        do Memory.deAlloc(this);
+        
+        return;
+    }
+}

@@ -1,0 +1,21 @@
+class CollisionChecker {
+    function boolean checkCollision(Obstacle obstacle, Player player, int obstacleWidth) {
+        var int playerX, playerY, playerWidth, playerHeight;
+        var int obstacleX, obstacleYUpperPart, obstacleYLowerPart;
+        
+        let playerX = player.getX();
+        let playerY = player.getY();
+        let obstacleX = obstacle.getX();
+        let obstacleYUpperPart = obstacle.getYUpperPart();
+        let obstacleYLowerPart = obstacle.getYLowerPart();
+        let playerWidth = player.getWidth();
+        let playerHeight = player.getHeight();
+
+        if (((playerX + playerWidth) > obstacleX) & (playerX < (obstacleX + obstacleWidth))) {
+            if (((playerY + playerHeight) > obstacleYLowerPart) | (playerY < obstacleYUpperPart)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

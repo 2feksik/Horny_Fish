@@ -1,0 +1,155 @@
+class Game {
+    field Player player;
+    field ObstaclesLinkedList obstacles;
+    static int maxObstaclesSimultaneously;
+    field int obstaclesCount;
+    field int distanceBetweenObstacles;
+    field boolean isGameOver;
+    field Painter painter;
+    field int scoreTicks;
+    field int obstacleVerticalOffset;
+    field boolean increasingOffset;
+    static char whitespaceChar;
+    static int obstaclesWidth;
+    static int obstaclesFrequency;
+
+    constructor Game new() {
+        let player = Player.new();
+        let obstacles = ObstaclesLinkedList.new(maxObstaclesSimultaneously);
+        let obstaclesCount = 0;
+        let painter = Painter.new();
+        let distanceBetweenObstacles = 0;
+        let isGameOver = false;
+        let scoreTicks = 0;
+        let obstacleVerticalOffset = 0;
+        let increasingOffset = true;
+
+        return this;
+    }
+
+    function void initializeStaticFields() {
+        let maxObstaclesSimultaneously = 5;
+        let whitespaceChar = 32;
+        let obstaclesWidth = 32;
+        let obstaclesFrequency = 35;
+
+        return;
+    }
+
+    method void run() {
+        var char pressedKey;
+        var ObstacleNode newNode;
+        var Obstacle newNodeCurrent;
+        var ObstacleNode tempObstacle;
+
+        do painter.drawStartScreen();
+        do Screen.clearScreen();
+        do player.draw();
+        
+        while (~isGameOver) {
+            let pressedKey = Keyboard.keyPressed();
+            if (pressedKey = whitespaceChar) {
+                do player.jump();
+            }
+            do player.update();
+            
+            
+            let distanceBetweenObstacles = distanceBetweenObstacles + 1;
+            if (distanceBetweenObstacles > obstaclesFrequency) {
+                let newNodeCurrent = Obstacle.new(obstacleVerticalOffset);
+                let newNode = ObstacleNode.new(newNodeCurrent);
+
+                do obstacles.addNodeToEnd(newNode);
+
+                let distanceBetweenObstacles = 0;
+                
+                do changeVerticalOffset();
+            }
+            
+            let obstaclesCount = obstacles.getObstaclesCount();
+            if (obstaclesCount > 0) {
+                let tempObstacle = obstacles.getHead();
+                if (CollisionChecker.checkCollision(tempObstacle.getCurrent(), player, obstaclesWidth)) {
+                    let isGameOver = 1;
+                }
+            }            
+
+            let scoreTicks = scoreTicks + 1;
+            if (scoreTicks > 999) {
+                do painter.drawGameWin(scoreTicks / 10);
+
+                while (true) {
+                    let pressedKey = Keyboard.keyPressed();
+                    if (pressedKey = whitespaceChar) {
+                        do restartGame();
+                    }
+                }
+            }
+
+            do Screen.clearScreen();
+            do player.draw();
+
+            if (obstaclesCount > 0) {
+                do obstacles.update();
+            }
+
+            do obstacles.draw();
+            do painter.drawScore(scoreTicks / 10);
+
+            do Sys.wait(60);
+        }
+        
+        do painter.drawGameOver(scoreTicks / 10);
+        while (true) {
+            let pressedKey = Keyboard.keyPressed();
+            if (pressedKey = whitespaceChar) {
+                do restartGame();
+            }
+        }
+
+        return;
+    }
+
+    method void changeVerticalOffset() {
+        if (obstacleVerticalOffset = 80) {
+            let increasingOffset = false;
+        }
+        if (obstacleVerticalOffset = 0) {
+            let increasingOffset = true;
+        }
+        if (increasingOffset) {
+            let obstacleVerticalOffset = obstacleVerticalOffset + 20;
+        }
+        if (~increasingOffset) {
+            let obstacleVerticalOffset = obstacleVerticalOffset - 20;
+        }
+
+        return;
+    }
+
+    method void restartGame() {
+        do dispose();
+
+        let player = Player.new();
+        let obstacles = ObstaclesLinkedList.new(maxObstaclesSimultaneously);
+        let obstaclesCount = 0;
+        let painter = Painter.new();
+        let distanceBetweenObstacles = 0;
+        let isGameOver = false;
+        let scoreTicks = 0;
+        let obstacleVerticalOffset = 0;
+        let increasingOffset = true;
+        
+        do run();
+
+        return;
+    }
+    
+    method void dispose() {
+        do player.dispose();
+        do obstacles.dispose();
+        do painter.dispose();
+
+        return;
+    }
+}

@@ -1,0 +1,104 @@
+class ObstaclesLinkedList {
+    field ObstacleNode head;
+    field ObstacleNode tail;
+    field int length;
+    field int obstaclesCount;
+
+    // Пожалуйста, давайте договоримся передавать len > 1, потому что в этом языке нет даже exeption`ов...
+    // мне хочется плакать(
+    constructor ObstaclesLinkedList new(int len) {
+        let head = 0;
+        let tail = 0;
+        let length = len;
+        let obstaclesCount = 0;
+
+        return this;
+    }
+
+    method void addNodeToEnd(ObstacleNode node) {
+        if (head = 0) {
+            let head = node;
+            let tail = node;
+            let obstaclesCount = obstaclesCount + 1;
+            return;
+        }
+
+        do tail.setNext(node);
+        let tail = tail.getNext();
+        let obstaclesCount = obstaclesCount + 1;
+
+        if (obstaclesCount > length) {
+            do removeFirstNode();
+            let obstaclesCount = obstaclesCount - 1;
+        }
+
+        return;
+    }
+
+    // И ещё договоримся, что не будем вызывать этот метод из пустого списка (exeption`ов всё ещё нет...)
+    method void removeFirstNode() {
+        let head = head.getNext();        
+        return;
+    }
+
+    method void update() {
+        var ObstacleNode tempNode;
+        var int i;
+        var Obstacle headCurrent;
+        var int headCurrentX;
+        
+        let headCurrent = head.getCurrent();
+        let headCurrentX = headCurrent.getX();
+        if (headCurrentX < 1) {
+            do removeFirstNode();
+            let obstaclesCount = obstaclesCount - 1;
+        }
+
+        let tempNode = head;
+        let i = 0;
+        while (i < obstaclesCount) {
+            let tempNode = tempNode.update();
+            let i = i + 1;
+        }
+        
+        return;
+    }
+
+    method void draw() {
+        var ObstacleNode tempNode;
+        var Obstacle tempNodeCurrentObstacle;
+        var int i;
+
+        let tempNode = head;
+        let i = 0;
+        while (i < obstaclesCount) {
+            let tempNodeCurrentObstacle = tempNode.getCurrent();
+            do tempNodeCurrentObstacle.draw();
+            let tempNode = tempNode.getNext();
+            let i = i + 1;
+        }
+        
+        return;
+    }
+
+    method int getObstaclesCount() {
+        return obstaclesCount;
+    }
+
+    method ObstacleNode getHead() {
+        return head;
+    }
+
+    method void dispose() {
+        var int i;
+        let i = 0;
+        while (i < obstaclesCount) {
+            do removeFirstNode();
+            let i = i + 1;
+        }
+
+        do Memory.deAlloc(this);
+
+        return;
+    }
+}

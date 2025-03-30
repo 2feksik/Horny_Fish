@@ -1,0 +1,104 @@
+class Painter {
+    field String scoreStr;
+    field String gameOverStr;
+    field String gameWinStr;
+    field String finalScoreStr;
+    field String pressSpaceToRestartStr;
+    field String pressSpaceToStartStr;
+    field String hornyFishStr;
+
+    constructor Painter new() {
+        let scoreStr = makeString("Score: ");
+        let gameOverStr = makeString("GAME OVER");
+        let gameWinStr = makeString("GAME WIN");
+        let finalScoreStr = makeString("Final Score: ");
+        let pressSpaceToRestartStr = makeString("Press SPACE to restart");
+        let pressSpaceToStartStr = makeString("Press SPACE to start");
+        let hornyFishStr = makeString("HORNY FISH");
+
+        return this;
+    }
+
+    method void drawScore(int score) {
+        do Output.moveCursor(1, 1);
+        do Output.printString(scoreStr);
+        do Output.printInt(score);
+        return;
+    }
+
+    method void drawGameOver(int score) {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 27);
+        do Output.printString(gameOverStr);
+        do Output.moveCursor(12, 24);
+        do Output.printString(finalScoreStr);
+        do Output.printInt(score);
+        do Output.moveCursor(14, 21);
+        do Output.printString(pressSpaceToRestartStr);
+
+        while (~Keyboard.keyPressed()) {
+            do Sys.wait(50);
+        }
+        return;
+    }
+
+    method void drawGameWin(int score) {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 27);
+        do Output.printString(gameWinStr);
+        do Output.moveCursor(12, 24);
+        do Output.printString(finalScoreStr);
+        do Output.printInt(score);
+        do Output.moveCursor(14, 21);
+        do Output.printString(pressSpaceToRestartStr);
+
+        while (~Keyboard.keyPressed()) {
+            do Sys.wait(50);
+        }
+        return;
+    }
+
+    method void drawStartScreen() {
+        do Screen.clearScreen();
+        do Output.moveCursor(8, 25);
+        do Output.printString(hornyFishStr);
+        do Output.moveCursor(14, 20);
+        do Output.printString(pressSpaceToStartStr);
+
+        while (~Keyboard.keyPressed()) {
+            do Sys.wait(50);
+        }
+        return;
+    }
+
+    method void dispose() {
+        do scoreStr.dispose();
+        do gameOverStr.dispose();
+        do gameWinStr.dispose();
+        do finalScoreStr.dispose();
+        do pressSpaceToRestartStr.dispose();
+        do pressSpaceToStartStr.dispose();
+        do hornyFishStr.dispose();
+
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method String makeString(String temp) {
+        var int i, length, charTemp;
+        var String result;
+
+        let length = String.length(temp);
+        let result = String.new(length);
+        let i = 0;
+
+        while (i < length) {
+            let charTemp = String.charAt(temp, i);
+            do result.appendChar(charTemp);
+            let i = i + 1;
+        }
+
+        do temp.dispose();
+        return result;
+    }
+}

@@ -1,0 +1,55 @@
+function CollisionChecker.checkCollision 7
+push argument 1
+call Player.getX 1
+pop local 0
+push argument 1
+call Player.getY 1
+pop local 1
+push argument 0
+call Obstacle.getX 1
+pop local 4
+push argument 0
+call Obstacle.getYUpperPart 1
+pop local 5
+push argument 0
+call Obstacle.getYLowerPart 1
+pop local 6
+push argument 1
+call Player.getWidth 1
+pop local 2
+push argument 1
+call Player.getHeight 1
+pop local 3
+push local 0
+push local 2
+add
+push local 4
+gt
+push local 0
+push local 4
+push argument 2
+add
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 1
+push local 3
+add
+push local 6
+gt
+push local 1
+push local 5
+lt
+or
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+return

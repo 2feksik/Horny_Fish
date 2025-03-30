@@ -1,0 +1,60 @@
+class Obstacle {
+    static int speed;
+    static int width;
+    static int screenHeigth;
+    field int x;
+    field int yUpperPart;
+    field int yLowerPart;
+    
+    constructor Obstacle new(int verticalOffset) {
+        let x = 450;
+        let yUpperPart = 80 + verticalOffset;
+        let yLowerPart = 140 + verticalOffset;
+
+        return this;
+    }
+
+    function void initializeStaticFields () {
+        let speed = 3;
+        let width = 32;
+        let screenHeigth = 255;
+
+        return;
+    }
+
+    method void update() {
+        let x = x - speed;
+
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, 0, x + width, yUpperPart);
+        do Screen.drawRectangle(x, yLowerPart, x + width, screenHeigth);
+        
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getYUpperPart() {
+        return yUpperPart;
+    }
+
+    method int getYLowerPart() {
+        return yLowerPart;
+    }
+
+    function int getWidth() {
+        return width;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+
+        return;
+    }
+}
